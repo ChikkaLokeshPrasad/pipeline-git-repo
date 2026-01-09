@@ -1,7 +1,7 @@
 pipeline {
     agent any 
     tools { 
-        jdk 'jdk11'  // Make sure JDK is configured in Jenkins 
+        jdk 'jdk21'  // Make sure JDK is configured in Jenkins 
     }
     stages { 
         stage('Checkout') { 
