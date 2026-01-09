@@ -1,41 +1,52 @@
 pipeline {
-    agent any 
-    tools { 
-        jdk 'jdk21'  // Make sure JDK is configured in Jenkins 
-    }
-    stages { 
-        stage('Checkout') { 
-            steps { 
-                git branch: 'main', 
-                    url: 'https://github.com/ChikkaLokeshPrasad/pipeline-git-repo'  // Update path 
-                echo 'Repository cloned successfully' 
-            } 
-        } 
-        stage('Build') { 
-            steps { 
-                echo 'Building application...' 
-                sh './build.sh' 
-            } 
-        } 
-        stage('Test') { 
-            steps { 
-                echo 'Running tests...' 
-                sh 'java -cp src/main/java com.example.HelloDevOpsTest' 
-            } 
-        } 
-        stage('Archive') { 
-            steps { 
-                echo 'Archiving artifacts...' 
-                archiveArtifacts artifacts: 'app.jar', fingerprint: true 
-                archiveArtifacts artifacts: 'build.sh', fingerprint: true 
-            } 
-        } 
-    }
-    post {
-        always { 
-            echo 'Pipeline completed' 
-            cleanWs()  // Clean workspace 
-        } 
-    }
-} 
+    agent any
 
+    tools {
+        jdk 'jdk21'
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                git branch: 'master',
+                    url: 'https://github.com/ChikkaLokeshPrasad/pipeline-git-repo'
+                echo 'Repository cloned successfully'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'Building application...'
+                bat '''
+                echo Compiling source files...
+                dir /s /b src\\*.java > sources.txt
+                javac @sources.txt
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                bat '''
+                java -cp src\\main\\java com.example.HelloDevOpsTest
+                '''
+            }
+        }
+
+        stage('Archive') {
+            steps {
+                echo 'Archiving artifacts...'
+                archiveArtifacts artifacts: 'app.jar', fingerprint: true
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Pipeline completed'
+            cleanWs()
+        }
+    }
+}
