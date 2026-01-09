@@ -8,3 +8,4 @@ public class HelloDevOps {
         return "Hello from DevOps Training"; 
     }
 } 
+// New feature added
