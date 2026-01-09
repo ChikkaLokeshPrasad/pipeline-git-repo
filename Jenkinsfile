@@ -33,7 +33,7 @@ pipeline {
             steps {
                 echo 'Running tests...'
                 bat '''
-                java -cp src\\main\\java com.example.HelloDevOpsTest
+                java -cp target\\classes com.example.HelloDevOpsTest
                 '''
             }
         }
