@@ -17,31 +17,21 @@ pipeline {
 
         stage('Build') {
             steps {
-                 echo 'Building application...'
-        bat '''
-        echo Creating target directory...
-        if not exist target\\classes mkdir target\\classes
-
-        echo Compiling source files...
-        dir /s /b src\\*.java > sources.txt
-        javac -d target\\classes @sources.txt
-        '''
+                bat 'build.bat'
             }
         }
 
         stage('Test') {
-            steps {
-                echo 'Running tests...'
-                bat '''
-                java -cp target\\classes com.example.HelloDevOpsTest
-                '''
-            }
-        }
+    steps {
+        echo 'Running tests...'
+        bat 'java -cp target\\classes com.example.HelloDevOpsTest'
+    }
+}
 
         stage('Archive') {
             steps {
-                echo 'Archiving artifacts...'
                 archiveArtifacts artifacts: 'app.jar', fingerprint: true
+                archiveArtifacts artifacts: 'build.bat', fingerprint: true
             }
         }
     }
