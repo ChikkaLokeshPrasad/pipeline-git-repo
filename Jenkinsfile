@@ -17,12 +17,15 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo 'Building application...'
-                bat '''
-                echo Compiling source files...
-                dir /s /b src\\*.java > sources.txt
-                javac @sources.txt
-                '''
+                 echo 'Building application...'
+        bat '''
+        echo Creating target directory...
+        if not exist target\\classes mkdir target\\classes
+
+        echo Compiling source files...
+        dir /s /b src\\*.java > sources.txt
+        javac -d target\\classes @sources.txt
+        '''
             }
         }
 
